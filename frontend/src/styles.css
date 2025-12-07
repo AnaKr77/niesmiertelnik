@@ -1,0 +1,1181 @@
+/* === Layout: cały ekran === */
+html,
+body,
+#root {
+margin: 0;
+padding: 0;
+height: 100%;
+width: 100%;
+font-family: system-ui, -apple-system, sans-serif;
+background: #181818;
+color: #eee;
+overflow: hidden; /* Brak paska przewijania na body */
+}
+
+/* === Kontener aplikacji === */
+.app-container {
+position: relative;
+height: 100vh;
+width: 100%;
+display: flex;
+flex-direction: column;
+}
+
+/* === Pasek statusu (stały u góry) === */
+.status-bar {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+z-index: 9999;
+height: 36px;
+background: #111;
+color: #eee;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 16px;
+font-size: 14px;
+border-bottom: 1px solid #333;
+}
+
+.status-data span {
+margin-left: 16px;
+color: #bbb;
+}
+
+.status-dot {
+display: inline-block;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+margin-right: 6px;
+}
+
+.status-dot.connected {
+background: #00d400;
+box-shadow: 0 0 6px #00ff00;
+}
+
+.status-dot.disconnected {
+background: #ff3b30;
+box-shadow: 0 0 6px #ff3b30;
+}
+
+/* === Główny układ: mapa + panel === */
+.dashboard {
+margin-top: 36px; /* miejsce na pasek statusu */
+display: flex;
+height: calc(100vh - 36px);
+width: 100%;
+overflow: hidden;
+}
+
+.left {
+flex: 1;
+background: #000;
+}
+
+.right {
+width: 40%;
+background: #1f1f1f;
+color: #eee;
+overflow-y: auto;
+padding: 10px 20px;
+}
+
+/* === Mapa === */
+#map,
+.map-half {
+height: 100%;
+width: 100%;
+}
+
+/* === Leaflet markery === */
+.firefighter-marker .icon-body {
+background: #4caf50; /* domyślny kolor */
+color: #fff;
+font-weight: bold;
+width: 36px;
+height: 36px;
+text-align: center;
+line-height: 36px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background 0.3s, transform 0.2s;
+box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/* === Efekt pulsowania (SCBA alarm) === */
+.pulse .icon-body {
+animation: pulseAnim 1s infinite alternate;
+}
+@keyframes pulseAnim {
+from {
+transform: scale(1);
+box-shadow: 0 0 8px rgba(255, 100, 100, 0.4);
+}
+to {
+transform: scale(1.3);
+box-shadow: 0 0 16px rgba(255, 0, 0, 0.7);
+}
+}
+
+/* === Miganie SOS === */
+.sos .icon-body {
+animation: sosAnim 0.4s infinite alternate;
+background: #ff0000 !important;
+}
+@keyframes sosAnim {
+from {
+opacity: 1;
+}
+to {
+opacity: 0.2;
+}
+}
+
+/* === Panel strażaków (prawa strona) === */
+.panel {
+padding: 0 16px;
+color: #eee;
+}
+
+.panel h2 {
+border-bottom: 2px solid #333;
+padding-bottom: 8px;
+margin-bottom: 12px;
+}
+
+.cards {
+  display: grid;
+  /* Dwie kolumny o równej szerokości. Kropka. */
+  grid-template-columns: 1fr 1fr !important; 
+  gap: 10px;
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+/* === Styl pojedynczej karty strażaka === */
+
+.ff-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+/* HEADER – dane podstawowe */
+.ff-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 14px;
+}
+.ff-avatar {
+font-size: 28px;
+background: #2d2d2d;
+border-radius: 50%;
+width: 44px;
+height: 44px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.ff-info {
+flex-grow: 1;
+margin-left: 10px;
+}
+.ff-info h3 {
+margin: 0;
+font-size: 1.1rem;
+}
+.ff-info p {
+margin: 0;
+font-size: 0.9rem;
+color: #aaa;
+}
+.ff-team {
+background: #2f3948;
+color: #e9ecef;
+border-radius: 8px;
+padding: 4px 10px;
+font-size: 0.9rem;
+}
+
+/* === Grid – kafelki telemetryczne === */
+.ff-metrics {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-top: 12px;
+margin-bottom: 8px;
+}
+
+.metric-card {
+background: #2b2f36;
+border-radius: 8px;
+padding: 10px;
+text-align: center;
+font-weight: 600;
+}
+.metric-value {
+font-size: 1.2rem;
+color: #37f58c;
+}
+.metric-icon {
+font-size: 1.1rem;
+margin-right: 5px;
+}
+.metric-label {
+font-size: 0.78rem;
+color: #888;
+margin-top: 2px;
+}
+
+/* === Pasek stresu === */
+.ff-stress {
+border-top: 1px solid #333;
+padding-top: 8px;
+font-size: 0.9rem;
+color: #bbb;
+}
+.stress-low {
+color: #32f18e;
+}
+.stress-moderate {
+color: #89b9ff;
+}
+.stress-high {
+color: #ffb347;
+}
+.stress-critical {
+color: #ff4d4d;
+}
+
+/* === Przewijanie panelu === */
+.right::-webkit-scrollbar {
+width: 8px;
+}
+.right::-webkit-scrollbar-thumb {
+background: #444;
+border-radius: 4px;
+}
+.right::-webkit-scrollbar-thumb:hover {
+background: #666;
+}
+
+/* === zaznaczenie klikniętego strażaka === */
+.ff-card.selected {
+outline: 2px solid #52a8ff;
+box-shadow: 0 0 8px rgba(82, 168, 255, 0.5);
+}
+
+/* szybsze streszczenie metryk */
+.ff-metrics-small {
+display: flex;
+justify-content: space-between;
+color: #bbb;
+font-size: 0.9rem;
+margin: 6px 0;
+}
+
+/* === widok szczegółowy === */
+.ff-detail {
+animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(6px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.btn-back {
+background: #2b2f36;
+border: none;
+color: #ccc;
+font-size: 0.9rem;
+padding: 6px 10px;
+border-radius: 6px;
+cursor: pointer;
+margin-bottom: 10px;
+}
+.btn-back:hover {
+background: #3b3f46;
+}
+
+.ff-stats-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+margin-top: 12px;
+}
+.metric-big {
+background: #2b2f36;
+border-radius: 8px;
+text-align: center;
+padding: 12px;
+}
+.metric-big-value {
+color: #37f58c;
+font-size: 1.2rem;
+}
+.metric-big-label {
+color: #888;
+font-size: 0.8rem;
+}
+
+/* dodatkowe sekcje */
+.ff-extra {
+margin-top: 12px;
+font-size: 0.85rem;
+color: #aaa;
+}
+.ff-alerts {
+margin-top: 14px;
+}
+.ff-alerts h4 {
+margin: 0 0 5px 0;
+}
+.ff-alerts ul {
+list-style: none;
+padding: 0;
+margin: 0;
+font-size: 0.85rem;
+}
+.ff-alerts li {
+padding: 2px 0;
+}
+
+.ff-card {
+background: #212529;
+border-radius: 12px;
+padding: 16px;
+box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+transition: 0.2s ease all;
+cursor: pointer; /* żeby wyglądało klikalnie */
+}
+.ff-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+.ff-header h3 {
+font-size: 1rem;
+}
+.ff-metrics-small {
+font-size: 0.9rem;
+}
+.ff-team {
+font-size: 0.85rem;
+padding: 4px 8px;
+}
+.ff-chart {
+margin-top: 16px;
+padding: 12px;
+background: #2b2f36;
+border-radius: 8px;
+}
+
+.ff-chart h4 {
+margin: 0 0 8px 0;
+font-size: 0.95rem;
+color: #89b9ff;
+}
+
+.ff-metrics-small span svg,
+.ff-stress svg,
+.ff-alerts svg {
+vertical-align: top;
+margin-right: 4px;
+font-size: large;
+}
+.metric-big-value svg {
+vertical-align: middle;
+margin-right: 6px;
+}
+
+/* Kolorowe oznaczenie pozostałego czasu SCBA */
+.time-warning {
+color: #f5c637; /* żółty – ostrzeżenie */
+font-weight: 600;
+}
+
+.time-critical {
+color: #ff4d4d; /* czerwony – alarm */
+font-weight: 700;
+animation: blinkCritical 1s infinite alternate; /* lekkie mruganie */
+}
+
+@keyframes blinkCritical {
+from {
+opacity: 1;
+}
+to {
+opacity: 0.6;
+}
+}
+
+.floor {
+float: right;
+color: "#89b9ff";
+font-weight: 500;
+}
+
+.section-title {
+margin-top: 16px;
+margin-bottom: 8px;
+font-size: 1rem;
+font-weight: 600;
+color: #89b9ff;
+}
+
+/* Lista alertów */
+.ff-alert-list {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-top: 8px;
+}
+
+.alert-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #2b2f36;
+padding: 8px 12px;
+border-radius: 6px;
+font-size: 0.9rem;
+font-weight: 500;
+}
+
+.alert-text {
+flex-grow: 1;
+margin-left: 6px;
+}
+
+.alert-time {
+color: #aaa;
+font-size: 0.8rem;
+}
+
+.alert-warning {
+background: rgba(245, 198, 55, 0.1);
+border-left: 4px solid #f5c637;
+}
+
+.alert-critical {
+background: rgba(255, 77, 77, 0.1);
+border-left: 4px solid #ff4d4d;
+}
+
+.alert-info {
+background: rgba(55, 245, 140, 0.1);
+border-left: 4px solid #37f58c;
+}
+
+.alert-filters {
+display: flex;
+gap: 8px;
+margin-top: 6px;
+margin-bottom: 8px;
+}
+.alert-filters button {
+background: #2b2f36;
+border: none;
+color: #aaa;
+padding: 5px 10px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 0.85rem;
+transition: 0.2s;
+}
+.alert-filters button.active {
+background: #52a8ff;
+color: #fff;
+}
+.alert-filters button:hover {
+background: #3b3f46;
+}
+
+.ff-alert-list {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.alert-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 8px 12px;
+border-radius: 6px;
+background: #2b2f36;
+font-size: 0.9rem;
+}
+.alert-item.alert-warning {
+border-left: 4px solid #f5c637;
+background: rgba(245, 198, 55, 0.1);
+}
+.alert-item.alert-critical {
+border-left: 4px solid #ff4d4d;
+background: rgba(255, 77, 77, 0.1);
+}
+.alert-item.alert-info {
+border-left: 4px solid #37f58c;
+background: rgba(55, 245, 140, 0.1);
+}
+.alert-time {
+color: #888;
+font-size: 0.8rem;
+}
+
+.ff-detail {
+animation: fadeIn 0.3s ease;
+}
+
+/* ... (inne style ff-detail) ... */
+
+.ff-stats-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+margin-top: 12px;
+}
+
+/* Domyślny styl dla MetricBig */
+.metric-big {
+background: #2b2f36; /* Domyślny ciemny kolor */
+border-radius: 8px;
+text-align: center;
+padding: 12px;
+transition: background 0.3s ease; /* Płynne przejście koloru tła */
+}
+.metric-big-value {
+color: #37f58c; /* Domyślny zielony kolor tekstu */
+font-size: 1.2rem;
+}
+.metric-big-label {
+color: #888;
+font-size: 0.8rem;
+}
+
+/* Nowe klasy dla kolorowania TŁA Kafelków */
+.metric-warning {
+/* Kolor tła dla ostrzeżenia */
+background: rgba(245, 198, 55, 0.2); /* Żółty z przezroczystością */
+border: 1px solid #f5c637;
+}
+
+.metric-critical {
+/* Kolor tła dla alarmu krytycznego */
+background: rgba(255, 77, 77, 0.2); /* Czerwony z przezroczystością */
+border: 1px solid #ff4d4d;
+animation: blinkBackground 1.5s infinite alternate; /* Dodatkowy efekt */
+}
+
+@keyframes blinkBackground {
+from {
+background: rgba(255, 77, 77, 0.2);
+}
+to {
+background: rgba(255, 77, 77, 0.4);
+}
+}
+
+/* === Zwijane sekcje (Collapsible) === */
+.section-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #2b2f36;
+padding: 10px 16px;
+border-radius: 8px;
+margin-top: 16px;
+margin-bottom: 8px;
+cursor: pointer;
+transition: background 0.2s;
+user-select: none;
+}
+
+.section-header:hover {
+background: #3b3f46;
+}
+
+.section-title-wrapper {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.section-title {
+margin: 0;
+font-size: 1rem;
+font-weight: 600;
+color: #eee;
+}
+
+.section-toggle-icon {
+color: #888;
+transition: transform 0.3s ease;
+}
+
+.section-toggle-icon.open {
+transform: rotate(180deg);
+}
+
+.section-content {
+overflow: hidden;
+transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+opacity: 1;
+}
+
+.section-content.collapsed {
+max-height: 0;
+opacity: 0;
+margin: 0;
+padding: 0;
+}
+
+/* Styl dla małych tagów w nagłówku sekcji (np. status baterii) */
+.header-badges {
+display: flex;
+gap: 8px;
+}
+
+.badge {
+font-size: 0.75rem;
+padding: 2px 8px;
+border-radius: 4px;
+background: #444;
+color: #ccc;
+}
+
+.badge.warning { background: rgba(245, 198, 55, 0.2); color: #f5c637; }
+.badge.critical { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; }
+.badge.success { background: rgba(55, 245, 140, 0.2); color: #37f58c; }
+
+.metric-warning .metric-big-value {
+color: #f5c637 !important; /* Wymuszamy żółty tekst */
+}
+
+.metric-critical .metric-big-value {
+color: #ff4d4d !important; /* Wymuszamy czerwony tekst */
+animation: blinkText 1.5s infinite alternate;
+}
+
+@keyframes blinkText {
+from { opacity: 1; }
+to { opacity: 0.7; }
+}
+
+/* Opcjonalnie: poprawiony wygląd nagłówków sekcji */
+.section-header {
+background: #222;
+border-left: 4px solid #444; /* Domyślny pasek */
+}
+/* Jeśli sekcja ma badge critical, zmieniamy pasek */
+.section-header.has-critical {
+border-left-color: #ff4d4d;
+}
+
+/* === Styl Kardiomonitora === */
+.medical-chart-wrapper {
+position: relative;
+background-color: #050505; /* Bardzo ciemne tło */
+border: 1px solid #1a3320;
+border-radius: 6px;
+padding: 10px;
+overflow: hidden;
+box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8); /* Winieta */
+}
+
+/* Siatka medyczna tworzona przez CSS (lżejsza dla JS) */
+.medical-background {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+pointer-events: none;
+background-image:
+linear-gradient(rgba(55, 245, 140, 0.1) 1px, transparent 1px),
+linear-gradient(90deg, rgba(55, 245, 140, 0.1) 1px, transparent 1px);
+background-size: 20px 20px; /* Rozmiar kratek */
+z-index: 0;
+}
+
+/* Efekt poświaty (glow) dla linii wykresu */
+.medical-chart-canvas canvas {
+filter: drop-shadow(0 0 4px rgba(55, 245, 140, 0.6));
+position: relative;
+z-index: 1;
+}
+
+/* Animacja skanowania (opcjonalny bajer - pasek przesuwający się po ekranie) */
+.scan-line {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent 0%, rgba(55, 245, 140, 0.05) 50%, transparent 100%);
+animation: scan 4s linear infinite;
+pointer-events: none;
+z-index: 2;
+}
+
+@keyframes scan {
+from { transform: translateX(-100%); }
+to { transform: translateX(100%); }
+}
+
+.alert-active {
+animation: alertFlash 1s ease-in-out infinite alternate;
+border: 2px solid #ff4d4d;
+box-shadow: 0 0 12px rgba(255, 77, 77, 0.6);
+}
+
+@keyframes alertFlash {
+from {
+box-shadow: 0 0 4px rgba(255, 77, 77, 0.4);
+}
+to {
+box-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
+transform: scale(1.02);
+}
+}
+
+/* --- Style dla Mapy i Markerów --- */
+
+#map {
+width: 100%;
+height: 100%;
+background: #333;
+}
+
+/* Kontener markera strażaka */
+.firefighter-icon-container {
+background: transparent;
+border: none;
+}
+
+.ff-marker-wrapper {
+position: relative;
+width: 100%;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* Rysowanie strzałki za pomocą CSS Borders */
+.ff-arrow {
+width: 0;
+height: 0;
+border-left: 10px solid transparent;
+border-right: 10px solid transparent;
+/* Dolna krawędź to kolor strzałki (zmienna dynamiczna w JS) */
+border-bottom: 20px solid #00cc00;
+/* Cień dla lepszej widoczności na mapie */
+filter: drop-shadow(0 0 2px black);
+/* Ważne dla płynnego obrotu */
+transform-origin: center center;
+transition: transform 0.3s linear;
+}
+
+/* Etykieta nazwiska pod strzałką */
+.ff-label {
+position: absolute;
+bottom: -15px;
+background: rgba(0, 0, 0, 0.7);
+color: white;
+padding: 1px 4px;
+border-radius: 4px;
+font-size: 10px;
+white-space: nowrap;
+pointer-events: none;
+text-shadow: 0 1px 1px black;
+}
+
+/* Marker Beacona (Kropka) */
+.beacon-dot-marker {
+display: flex;
+align-items: center;
+justify-content: center;
+background: transparent;
+border: none;
+}
+
+/* Dodatkowy efekt hover na kropkę beacona */
+.beacon-dot-marker:hover div {
+transform: scale(1.3);
+transition: transform 0.2s;
+cursor: pointer;
+}
+
+/* --- Style Markerów na Mapie --- */
+
+/* Kontener główny dla strażaka - nie ma tła, trzyma wymiary */
+.ff-marker-container {
+background: transparent;
+border: none;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/* 1. Kółko (Baza) - środek markera */
+.ff-circle {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+border: 3px solid white;
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 10; /* Kółko jest pod spodem napisów, ale nad mapą */
+position: relative;
+}
+
+.ff-icon {
+font-size: 16px;
+line-height: 1;
+}
+
+/* 2. Wrapper kierunku - to on się obraca */
+.ff-direction-wrapper {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none; /* Kliknięcia przechodzą do markera */
+z-index: 5; /* Poniżej kółka, żeby strzałka wychodziła "spod" lub "znad" krawędzi */
+}
+
+/* 3. Sama strzałka (trójkąt) */
+.ff-arrow-tip {
+position: absolute;
+top: -8px; /* Wysunięcie strzałki ponad kółko */
+left: 50%;
+transform: translateX(-50%);
+/* Rysowanie trójkąta CSS */
+width: 0;
+height: 0;
+border-left: 8px solid transparent;
+border-right: 8px solid transparent;
+/* Kolor jest nadawany dynamicznie w JS (border-bottom-color) */
+border-bottom: 12px solid #555;
+filter: drop-shadow(0 -1px 1px rgba(0,0,0,0.3));
+}
+
+/* Etykieta nazwiska */
+.ff-label {
+position: absolute;
+bottom: -18px; /* Pod markerem */
+background: rgba(0, 0, 0, 0.75);
+color: white;
+padding: 2px 6px;
+border-radius: 4px;
+font-size: 11px;
+font-weight: 600;
+white-space: nowrap;
+pointer-events: none;
+text-shadow: 0 1px 2px black;
+z-index: 20;
+}
+
+/* Beacony - hover effect dla powiększonych kropek */
+.beacon-dot-marker:hover div {
+transform: scale(1.3);
+cursor: pointer;
+z-index: 100;
+}
+
+/* --- Wrapper mapy --- */
+.map-wrapper {
+position: relative; /* Ważne dla pozycjonowania przycisków */
+width: 100%;
+height: 100%;
+}
+
+#map {
+z-index: 1;
+}
+
+/* --- Kontroler Pięter --- */
+.floor-control {
+position: absolute;
+top: 20px;
+right: 20px;
+background: rgba(44, 62, 80, 0.9);
+padding: 10px;
+border-radius: 8px;
+z-index: 1000; /* Musi być nad mapą */
+display: flex;
+flex-direction: column;
+gap: 5px;
+box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+backdrop-filter: blur(4px);
+}
+
+.floor-label {
+color: #95a5a6;
+font-size: 10px;
+text-align: center;
+font-weight: bold;
+margin-bottom: 5px;
+}
+
+.floor-btn {
+background: transparent;
+border: 1px solid #7f8c8d;
+color: #ecf0f1;
+padding: 8px 12px;
+border-radius: 4px;
+cursor: pointer;
+font-weight: bold;
+transition: all 0.2s;
+width: 40px;
+text-align: center;
+}
+
+.floor-btn:hover {
+background: #34495e;
+}
+
+.floor-btn.active {
+background: #3498db;
+border-color: #3498db;
+color: white;
+box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+
+/* --- Ikony Wejść --- */
+.entrance-marker {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.door-icon {
+font-size: 20px;
+filter: drop-shadow(0 0 2px white);
+}
+
+.door-label {
+background: rgba(255, 255, 255, 0.8);
+padding: 1px 4px;
+border-radius: 4px;
+font-size: 10px;
+white-space: nowrap;
+font-weight: bold;
+margin-top: -5px;
+}
+
+/* --- Ikona Schodów --- */
+.stairs-marker {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.stairs-box {
+background: #f1c40f;
+border: 2px solid #000;
+width: 20px;
+height: 20px;
+text-align: center;
+line-height: 16px;
+font-weight: bold;
+font-size: 12px;
+color: #000;
+box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- KONTROLA MAPY (Prawy górny róg) --- */
+.map-controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(44, 62, 80, 0.95);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Odstęp między grupami */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px);
+  border: 1px solid #555;
+  min-width: 60px;
+  align-items: center;
+}
+
+/* Grupa przycisków */
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.control-divider {
+  width: 100%;
+  height: 1px;
+  background: #555;
+  margin: 2px 0;
+}
+
+/* Przyciski typu mapy */
+.map-btn {
+  background: transparent;
+  border: 1px solid #7f8c8d;
+  color: #ecf0f1;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-btn:hover {
+  background: #34495e;
+}
+
+.map-btn.active {
+  background: #27ae60; /* Zielony dla aktywnego trybu mapy */
+  border-color: #27ae60;
+  color: white;
+  box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+}
+
+/* Stylizacja przycisków pięter (dopasowana do grupy) */
+.floor-group {
+  align-items: center;
+}
+
+.floor-label {
+  color: #ccc;
+  font-size: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 3px;
+  width: 100%;
+}
+
+.floor-btn {
+  background: transparent;
+  border: 1px solid #7f8c8d;
+  color: #ecf0f1;
+  padding: 6px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  width: 100%; /* Rozciągnij na szerokość kontenera */
+  text-align: center;
+}
+
+.floor-btn:hover {
+  background: #34495e;
+}
+
+.floor-btn.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+}
+
+.filters-container {
+  margin-bottom: 16px;
+  background: #25282e;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #111;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+
+.search-icon {
+  color: #888;
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  color: #eee;
+  width: 100%;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.filter-options {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-options select {
+  background: #333;
+  color: #ccc;
+  border: 1px solid #555;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  flex: 1; /* Dropdowny dzielą się miejscem po równo */
+  cursor: pointer;
+  outline: none;
+}
+
+.filter-options select:hover {
+  background: #444;
+}
+
+/* --- PRZYCISK LOKALIZACJI NA KARCIE --- */
+.locate-btn {
+  background: transparent;
+  border: 1px solid #444;
+  color: #3498db; /* Niebieski kolor ikony */
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+}
+
+.locate-btn:hover {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+  transform: scale(1.1);
+}
+
+/* Mały pasek statusu na dole karty (opcjonalny detal) */
+.status-line {
+  height: 3px;
+  width: 100%;
+  margin-top: 8px;
+  border-radius: 2px;
+  background: #444; /* Domyślny */
+}
+.status-line.low { background: #2ecc71; }
+.status-line.moderate { background: #f1c40f; }
+.status-line.high { background: #e67e22; }
+.status-line.critical { background: #e74c3c; }
