@@ -1,4 +1,4 @@
-napisz do tak, żeby łądnie wyglądało w readme w githubie # 🚒 **NIŚMIERTELNIK - Lokalizacja strażaków bez GPS**
+# 🚒 **NIŚMIERTELNIK - Lokalizacja strażaków bez GPS**
 
 ## 🎯 **CO TO JEST?**
 **GPS wewnątrz budynków dla strażaków** - system lokalizujący strażaków z dokładnością 30 cm, zapisujący ich trasy i pokazujący w animacji 3D.
